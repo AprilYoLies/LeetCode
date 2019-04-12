@@ -6,6 +6,30 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
+ * 14
+ * 3 2 1 2 1 1 1 2 2 3 3 4 2 2
+ * 3 3 4 3 3 5 4 6 7 5 6 8 4 9
+ * 2 1 2 1 1 1 2 2 3 3 4 4 1 1
+ * 2 2 1 3 2 4 7 2 2 5 7 2 2 1
+ * <p>
+ * 4
+ * 3 2 1 2
+ * 2 3 4 3
+ * 2 1 2 1
+ * 2 2 1 3
+ * <p>
+ * 2
+ * 1 2
+ * 2 3
+ * 2 8
+ * 2 1
+ * <p>
+ * 11
+ * 1 4 1 2 7 1 2 4 7 4 7
+ * 4 3 3 4 2 2 7 2 8 5 4
+ * 1 3 2 2 8 1 3 4 7 6 8
+ * 3 1 1 2 1 1 5 1 6 3 3
+ *
  * @Author EvaJohnson
  * @Date 2019-04-12
  * @Email g863821569@gmail.com
@@ -85,12 +109,12 @@ public class Azulejos {
     }
 
     /**
-     * @see @findTarget()
      * @param height 当前前排瓦片的高度
      * @param l      当前前排瓦片的索引
      * @param row2   前排瓦片
      * @param row1   后排瓦片
      * @return
+     * @see @findTarget()
      */
     private static int findAndExchange(int height, int l, List<Tile> row2, List<Tile> row1) {
         int target = -1;
@@ -119,18 +143,19 @@ public class Azulejos {
 
     /**
      * 查找对应瓦片链表中是否有满足需求高度的瓦片。
-     *
+     * <p>
      * 此处的查找分为两种情况，如果是位于前排，那么就是查找高度小于其后排瓦片且尽可能大的瓦片，
      * 如果是位于后排，那么便是查找大于其前排高度且尽可能小的瓦片。需要注意在两种查找的情况下，
      * 查找范围都是在当前价格区段中。
-     * @param row 被查找的瓦片序列
-     * @param l 当前被查找的位置
-     * @param r 相同价格区段的最后一个瓦片的索引
-     * @param p 目前所在的价格区段
+     *
+     * @param row    被查找的瓦片序列
+     * @param l      当前被查找的位置
+     * @param r      相同价格区段的最后一个瓦片的索引
+     * @param p      目前所在的价格区段
      * @param height 参考高度
-     * @param max 记录尽可能大或者小的值
+     * @param max    记录尽可能大或者小的值
      * @param target 目标位置，如果没找到，将返回-1，否则为目标索引
-     * @param flag 两种查找模式，true 代表查找前排小于后排高度尽可能大的target，false 代表查找后排大于前排高度尽可能小的target
+     * @param flag   两种查找模式，true 代表查找前排小于后排高度尽可能大的target，false 代表查找后排大于前排高度尽可能小的target
      * @return 被查找的target的索引下标，-1代表查找失败
      */
     private static int findTarget(List<Tile> row, int l, int r, int p, int height, int max, int target, boolean flag) {
@@ -140,7 +165,7 @@ public class Azulejos {
         }
         for (int i = l; i < r; i++) {
             int h = row.get(i).height;
-            if (h > height) {
+            if ((flag && h < height) || (!flag && h > height)) {
                 if ((!flag && h < max) || (flag && h > max)) {
                     max = h;
                     target = i;
