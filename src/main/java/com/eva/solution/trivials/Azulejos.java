@@ -1,4 +1,4 @@
-package com.eva.solution;
+package com.eva.solution.trivials;
 
 import java.util.ArrayList;
 import java.util.Comparator;

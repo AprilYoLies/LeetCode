@@ -1,11 +1,11 @@
-package com.eva.solution;
+package com.eva.solution.leetcode;
 
 /**
  * @Author EvaJohnson
  * @Date 2019-04-12
  * @Email g863821569@gmail.com
  */
-public class LongestPalindrome {
+public class LeetCodeP5 {
     private static int[] res = new int[2];
 
     public String longestPalindrome(String s) {
