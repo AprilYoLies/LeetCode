@@ -10,7 +10,7 @@ import java.util.List;
  * @Date 2019-04-14
  * @Email g863821569@gmail.com
  */
-public class LeetCodeP30 {
+public class Solution30 {
     public List<Integer> findSubstring(String s, String[] words) {
         List<Integer> ans = new LinkedList<>();
         if (words == null || words.length == 0 || "".equals(s)) return ans;

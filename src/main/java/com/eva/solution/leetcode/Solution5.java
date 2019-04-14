@@ -5,7 +5,7 @@ package com.eva.solution.leetcode;
  * @Date 2019-04-12
  * @Email g863821569@gmail.com
  */
-public class LeetCodeP5 {
+public class Solution5 {
     private static int[] res = new int[2];
 
     public String longestPalindrome(String s) {
