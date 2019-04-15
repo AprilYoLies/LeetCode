@@ -1,7 +1,7 @@
 package com.eva.solution.leetcode;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,28 +18,25 @@ public class Solution30 {
         int wl = words[0].length();
         int sl = s.length();
         int wc = words.length;
-        ArrayList<String> toVisit = new ArrayList<>(Arrays.asList(words));
-        LinkedList<String> visited = new LinkedList<>();
+        HashMap<String, Integer> map = new HashMap<>();
+        int index = 0;
+        int[][] usedTable = new int[2][wc];
+        for (String s1 : words) {
+            Integer i = map.get(s1);
+            if (i == null) map.put(s1, index++);
+            usedTable[0][map.get(s1)]++;
+        }
         // 如果剩余的字符串小于串联字符串的总和，那就退出循环
         for (int i = 0; i < sl - len + 1; i++) {
             int l = i;
             for (int k = 0; k < wc; k++) {
-                boolean isFound = false;
                 String subs = s.substring(l, l + wl);
-                for (int j = 0; j < toVisit.size(); j++) {
-                    if (subs.equals(toVisit.get(j))) {
-                        visited.add(toVisit.remove(j));
-                        l += wl;
-                        isFound = true;
-                        break;
-                    }
-                }
-                int after = visited.size();
-                if (!isFound) break;
-                if (after == wc) ans.add(i);
+                Integer cur = map.get(subs);
+                if (cur != null && usedTable[0][cur] != usedTable[1][cur]++) l += wl;
+                else break;
+                if (l - i == len) ans.add(i);
             }
-            toVisit.addAll(visited);
-            visited.clear();
+            Arrays.fill(usedTable[1], 0);
         }
         return ans;
     }
