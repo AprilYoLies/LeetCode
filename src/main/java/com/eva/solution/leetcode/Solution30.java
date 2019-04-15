@@ -24,17 +24,18 @@ public class Solution30 {
         for (int i = 0; i < sl - len + 1; i++) {
             int l = i;
             for (int k = 0; k < wc; k++) {
-                int before = visited.size();
+                boolean isFound = false;
                 String subs = s.substring(l, l + wl);
                 for (int j = 0; j < toVisit.size(); j++) {
                     if (subs.equals(toVisit.get(j))) {
                         visited.add(toVisit.remove(j));
                         l += wl;
+                        isFound = true;
                         break;
                     }
                 }
                 int after = visited.size();
-                if (before == after) break;
+                if (!isFound) break;
                 if (after == wc) ans.add(i);
             }
             toVisit.addAll(visited);
