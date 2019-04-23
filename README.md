@@ -26,8 +26,12 @@
 * [串联所有单词的子串](https://leetcode-cn.com/problems/substring-with-concatenation-of-all-words/)
 
   Solution30.java
+  
+* [串联所有单词的子串](https://leetcode-cn.com/problems/substring-with-concatenation-of-all-words/)
 
-* [从根到叶的二进制数之和](https://leetcode-cn.com/contest/weekly-contest-131/problems/sum-of-root-to-leaf-binary-numbers/)
+  Solution31.java
+
+* [下一个排列](https://leetcode-cn.com/problems/next-permutation/)
 
   SumOfRootToLeafBinaryNumbers.java
   
