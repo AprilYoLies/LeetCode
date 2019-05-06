@@ -30,7 +30,7 @@ public class SelectSort {
 
     public static void main(String[] args) {
         int i;
-        int[] a = { 20, 40, 30, 10, 60, 50 };
+        int[] a = {30, 40, 60, 10, 20, 50, 70, 25, 33, 12, 90, 100, 87, 59, 39, 101};
 
         System.out.print("before sort:");
         for (i = 0; i < a.length; i++)
