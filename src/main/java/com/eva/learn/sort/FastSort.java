@@ -12,6 +12,7 @@ public class FastSort {
     private static void quickSort(int[] a, int l, int r) {
         int ll = l;
         int rr = r;
+        // 参考点
         int mid = a[l];
         // 将整个数组分成大于和小于 mid 的两个部分，其中 mid 可以任取 l 到 r 区间中的一个值
         while (l < r) {
