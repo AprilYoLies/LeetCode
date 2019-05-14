@@ -135,9 +135,13 @@
 
   Solution31.java
 
-* [最长有效括号](https://leetcode-cn.com/problems/longest-valid-parentheses//)
+* [最长有效括号](https://leetcode-cn.com/problems/longest-valid-parentheses/)
   
   Solution32.java
+
+* [搜索旋转排序数组](https://leetcode-cn.com/problems/search-in-rotated-sorted-array/)
+  
+  Solution33.java
 
 > 杂项集合
 
