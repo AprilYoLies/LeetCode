@@ -12,7 +12,7 @@ public class Solution33 {
         if (nums.length == 0) return -1;
         if (nums.length == 1) return nums[0] == target ? 0 : -1;
         int len = nums.length - 1, res;
-        // 这种情况下，整个数组序列就是按照从小到大的顺序排列
+        // 这种情况下，整个数组序列就是按照从小到大的顺序排列，直接进行二分查找即可
         if (nums[0] < nums[len]) return Arrays.binarySearch(nums, target) < 0 ? -1 : Arrays.binarySearch(nums, target);
         int l = 0, r = len, mid = (l + r) / 2;
         // 找到旋转切点，比如原数组是 [5, 6, 7, 9, 10, 1, 2, 4],则旋转切点为 l = 4，r = 5
