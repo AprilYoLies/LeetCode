@@ -7,6 +7,13 @@
     <groupId>com.eva</groupId>
     <artifactId>LeetCode</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>com.eva</groupId>
+            <artifactId>maprreduce</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 
 </project>
