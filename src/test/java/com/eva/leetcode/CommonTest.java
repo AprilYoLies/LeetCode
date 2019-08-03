@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @Author EvaJohnson
@@ -82,5 +84,27 @@ public class CommonTest {
 
     public boolean isInterrupted() {
         return Thread.currentThread().isInterrupted();
+    }
+
+    @Test
+    public void lockTest() throws IOException {
+        Lock lock = new ReentrantLock();
+        for (int i = 0; i < 20; i++) {
+            new Thread(() -> {
+                try {
+                    System.out.println("before");
+                    // 默认情况下构建的是非公平锁，那么 lock.lock(); 方法实际是调用的 NonfairSync.lock 方法，在该方法中，会优先通过 cas 进行
+                    // 一次 aqs state 的判断，如果能获取到锁，就直接返回。否则会调用 AbstractQueuedSynchronizer.acquire 方法，该方法中也会
+                    // 会通过 cas 进行一次不公平的 state 检查，如果当前锁没有被持有，或者持有者是自己，那么就直接返回。否则就是将自己封装为 Node
+                    // 追加到等待队列中，然后被 park ，等待唤醒。自己加入队列的过程中也是通过 cas 操作完成，然后被 park 的过程中还会判断是否是自己到头
+                    // 结点位置了，如果是，就代表自己当前能够被唤醒了，那么就不用被 park 了，直接返回。
+                    lock.lock();
+                    System.out.println("after");
+                } finally {
+                    lock.unlock();
+                }
+            }).start();
+        }
+        System.in.read();
     }
 }
