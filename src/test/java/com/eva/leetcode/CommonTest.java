@@ -101,6 +101,10 @@ public class CommonTest {
                     lock.lock();
                     System.out.println("after");
                 } finally {
+                    // 还是以非公平锁进行说明，lock.unlock(); 方法根本是调用的 AbstractQueuedSynchronizer.release 方法，该方法中会先调用
+                    // tryRelease 方法，它是我们自己实现的逻辑，在这里边，ReentrantLock 选择的是如果 states 减少为 0 了，那么就说明锁释放了，
+                    // 于是置空当前持有锁的线程，同时返回 true，否则，就只是对 state 进行减一操作，然后返回 false。接下来会根据返回的状态进行操作,
+                    // 具体就是唤醒头结点后的第一个节点，这里的查找方式比较特别，选择的是从后向前查找的方式。
                     lock.unlock();
                 }
             }).start();
