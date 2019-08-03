@@ -120,7 +120,11 @@ public class CommonTest {
         CountDownLatch latch = new CountDownLatch(threads);
         for (int i = 0; i < threads; i++) {
             new Thread(() -> {
-                latch.countDown();
+                try {
+                    Thread.sleep(1000);
+                    latch.countDown();
+                } catch (InterruptedException ignored) {
+                }
             }).start();
         }
         System.out.println("before");
