@@ -2,8 +2,10 @@ package com.eva.leetcode;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @Author EvaJohnson
@@ -29,5 +31,56 @@ public class CommonTest {
         for (Integer key : keys) {
             hashMap.get(key);
         }
+    }
+
+    @Test
+    public void yieldTest() throws IOException {
+        for (int i = 0; i < 2; i++) {
+            final int n = i;
+            new Thread(() -> {
+                doSomething(n);
+            }).start();
+        }
+        System.in.read();
+    }
+
+    public synchronized void doSomething(int i) {
+        System.out.println("before");
+        Thread.yield(); // 测试说明 yield 不会释放锁
+        try {
+            if (i == 0) // 测试说明线程退出时，不会唤醒 wait 在监视器锁上的线程
+                wait();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("after");
+    }
+
+    // 中断线程的优雅方式
+    @Test
+    public void interruptTest() throws InterruptedException {
+        AtomicBoolean flag = new AtomicBoolean(true);
+        Thread thread = new Thread(() -> {
+            while (!isInterrupted()) {
+                try {
+                    System.out.println("before");
+                    Thread.sleep(1200000);
+                    System.out.println("after");
+                } catch (InterruptedException e) {
+                    System.out.println("----");
+                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
+                }
+            }
+            flag.set(false);
+        });
+        thread.start();
+        Thread.sleep(100);
+        thread.interrupt();
+        while (flag.get()) ;
+    }
+
+    public boolean isInterrupted() {
+        return Thread.currentThread().isInterrupted();
     }
 }
