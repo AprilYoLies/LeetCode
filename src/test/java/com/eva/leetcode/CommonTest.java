@@ -5,7 +5,9 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -110,5 +112,44 @@ public class CommonTest {
             }).start();
         }
         System.in.read();
+    }
+
+    @Test
+    public void countDownLatchTest() throws InterruptedException {
+        int threads = 10;
+        CountDownLatch latch = new CountDownLatch(threads);
+        for (int i = 0; i < threads; i++) {
+            new Thread(() -> {
+                latch.countDown();
+            }).start();
+        }
+        System.out.println("before");
+        latch.await();
+        System.out.println("after");
+    }
+
+    @Test
+    public void conditionTest() throws InterruptedException {
+        ReentrantLock lock = new ReentrantLock();
+        Condition condition = lock.newCondition();
+        new Thread(() -> {
+            try {
+                lock.lock();
+                System.out.println("before");
+                condition.await();
+                System.out.println("after");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+            }
+        }).start();
+        try {
+            Thread.sleep(1000);
+            lock.lock();
+            condition.signal();
+        } finally {
+            lock.unlock();
+        }
     }
 }
