@@ -1,4 +1,4 @@
-package com.eva.leetcode;
+package com.eva.leetcode.common;
 
 import org.junit.Test;
 
