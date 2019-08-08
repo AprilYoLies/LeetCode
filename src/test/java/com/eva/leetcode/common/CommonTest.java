@@ -4,8 +4,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -155,5 +154,28 @@ public class CommonTest {
         } finally {
             lock.unlock();
         }
+    }
+
+    @Test
+    public void executorTest() throws IOException {
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 1, TimeUnit.SECONDS, new ArrayBlockingQueue<>(5));
+        for (int i = 0; i < 15; i++) {
+            executor.execute(new ExpensiveTask());
+        }
+        System.in.read();
+    }
+
+    private class ExpensiveTask implements Runnable {
+
+        @Override
+        public void run() {
+            try {
+                System.out.println(Thread.currentThread().getName());
+                Thread.sleep(1000);
+            } catch (Exception ignored) {
+
+            }
+        }
+
     }
 }
