@@ -83,9 +83,9 @@ public class ConsistentHashWithVirtualNode {
             // 第一个Key就是顺时针过去离node最近的那个结点
             Integer i = subMap.firstKey();
             // 返回对应的服务器名称
-            return subMap.get(i);
+            return subMap.get(i).substring(0, subMap.get(i).indexOf("&&"));
         } catch (Exception e) {
-            return subMap.get(subMap.firstKey());
+            return subMap.get(subMap.firstKey()).substring(0, subMap.get(subMap.firstKey()).indexOf("&&"));
         }
     }
 
