@@ -47,6 +47,6 @@ public class Permutation {
 
     public static void main(String[] args) {
         Permutation permutation = new Permutation();
-        permutation.permutation("abc");
+        permutation.permutation("abcdefghi");
     }
 }
