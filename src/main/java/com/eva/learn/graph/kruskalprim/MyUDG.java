@@ -102,6 +102,77 @@ public class MyUDG {
         return candidates;
     }
 
+    private static Stack<Character> stack = new Stack<>();
+
+    /**
+     * 深度优先遍历
+     *
+     * @param edges 节点的连接集合
+     * @param nodes 节点集合
+     * @param begin 初始节点
+     * @return dfs 结果
+     */
+    private static String dfs(Edge[] edges, char[] nodes, char begin) {
+        boolean[] visited = new boolean[nodes.length];
+        int i = Arrays.binarySearch(nodes, begin);
+        visited[i] = true;
+        StringBuilder sb = new StringBuilder("dfs:");
+        sb.append(begin);
+        stack.push(begin);
+        dfs(edges, nodes, visited, begin, sb, stack);
+        return sb.toString();
+    }
+
+    /**
+     * 递归处理深度优先遍历
+     *
+     * @param edges   节点的连接集合
+     * @param nodes   节点集合
+     * @param visited 已访问节点标志
+     * @param cur     当前正在处理的节点
+     * @param sb      拼接结果
+     * @param stack   递归栈
+     */
+    private static void dfs(Edge[] edges, char[] nodes, boolean[] visited, char cur, StringBuilder sb, Stack<Character> stack) {
+        Character next = findNext(edges, cur, visited, nodes);
+        if (next == null) {
+            if (stack.isEmpty())
+                return;
+            Character pre = stack.pop();
+            dfs(edges, nodes, visited, pre, sb, stack);
+            return;
+        }
+        sb.append(", ").append(next);
+        stack.push(next);
+        dfs(edges, nodes, visited, next, sb, stack);
+    }
+
+    /**
+     * 查找当前节点下一个可访问节点
+     *
+     * @param edges   节点的连接集合
+     * @param cur     当前节点
+     * @param visited 节点访问标志
+     * @param nodes   节点集合
+     * @return 下一个有效节点
+     */
+    private static Character findNext(Edge[] edges, char cur, boolean[] visited, char[] nodes) {
+        List<Edge> candidates = candidateEdges(edges, cur);
+        for (Edge candidate : candidates) {
+            char next;
+            if (candidate.from == cur)
+                next = candidate.to;
+            else
+                next = candidate.from;
+            int i = Arrays.binarySearch(nodes, next);
+            if (!visited[i]) {
+                visited[i] = true;
+                return next;
+            }
+        }
+        return null;
+    }
+
     /**
      * 节点连接权重信息
      */
@@ -144,5 +215,9 @@ public class MyUDG {
             sb.append("[ ").append(re.from).append(", ").append(re.to).append(" ] ");
         }
         System.out.println(sb.toString());
+
+        String dfs = dfs(edges, nodes, 'B');
+        System.out.println(dfs);
     }
+
 }
