@@ -23,13 +23,36 @@ public class FastSort {
         }
         a[l] = mid;
         // 终止条件判断
-        if (ll < l - 1) quickSort(a,ll,l - 1);
-        if (l + 1 < rr) quickSort(a,l + 1,rr);
+        if (ll < l - 1) quickSort(a, ll, l - 1);
+        if (l + 1 < rr) quickSort(a, l + 1, rr);
+    }
+
+    private static void fastSort(int[] arr, int l, int r) {
+        int t = arr[l];
+        int lp = l;
+        int rp = r;
+        if (l >= r)
+            return;
+        while (lp < rp) {
+            while (lp < rp && arr[rp] >= t) {
+                rp--;
+            }
+            arr[lp] = arr[rp];
+            while (lp < rp && arr[lp] <= t) {
+                lp++;
+            }
+            arr[rp] = arr[lp];
+        }
+        arr[lp] = t;
+        fastSort(arr, l, lp - 1);
+        fastSort(arr, lp + 1, r);
     }
 
     public static void main(String[] args) {
         int i;
         int[] a = {30, 40, 60, 10, 20, 50, 70, 25, 33, 12, 90, 100, 87, 59, 39, 101};
+
+        int[] b = {30, 40, 60, 10, 20, 50, 70, 25, 33, 12, 90, 100, 87, 59, 39, 101};
 
         System.out.print("before sort:");
         for (i = 0; i < a.length; i++)
@@ -41,6 +64,13 @@ public class FastSort {
         System.out.print("after  sort:");
         for (i = 0; i < a.length; i++)
             System.out.printf("%d ", a[i]);
+        System.out.print("\n");
+
+        fastSort(b, 0, b.length - 1);
+
+        System.out.print("after  sort:");
+        for (i = 0; i < a.length; i++)
+            System.out.printf("%d ", b[i]);
         System.out.print("\n");
     }
 }
