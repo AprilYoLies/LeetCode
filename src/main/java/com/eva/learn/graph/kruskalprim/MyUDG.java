@@ -174,6 +174,57 @@ public class MyUDG {
     }
 
     /**
+     * 广度优先遍历
+     *
+     * @param edges 节点的连接集合
+     * @param nodes 节点集合
+     * @param c     起始节点
+     * @return 广度优先遍历结果
+     */
+    private static String bfs(Edge[] edges, char[] nodes, char c) {
+        StringBuilder sb = new StringBuilder("bfs:");
+        List<Character> chars = new ArrayList<>();
+        chars.add(c);
+        boolean[] visited = new boolean[nodes.length];
+        bfs(chars, sb, edges, nodes, visited);
+        sb.delete(sb.length() - 2, sb.length());
+        return sb.toString();
+    }
+
+    /**
+     * 递归广度优先遍历
+     *
+     * @param chars   当前层节点结合
+     * @param sb      StringBuilder
+     * @param edges   节点的连接集合
+     * @param nodes   节点集合
+     * @param visited 节点的访问标志
+     */
+    private static void bfs(List<Character> chars, StringBuilder sb, Edge[] edges, char[] nodes, boolean[] visited) {
+        List<Character> nChars = new ArrayList<>();
+        if (chars.size() == 0)
+            return;
+        for (Character c : chars) {
+            sb.append(c).append(", ");
+            visited[Arrays.binarySearch(nodes, c)] = true;
+            List<Edge> candidates = candidateEdges(edges, c);
+            for (Edge candidate : candidates) {
+                char next;
+                if (candidate.from == c)
+                    next = candidate.to;
+                else
+                    next = candidate.from;
+                int i = Arrays.binarySearch(nodes, next);
+                if (!visited[i]) {
+                    visited[i] = true;
+                    nChars.add(next);
+                }
+            }
+        }
+        bfs(nChars, sb, edges, nodes, visited);
+    }
+
+    /**
      * 节点连接权重信息
      */
     private static class Edge implements Comparable {
@@ -218,6 +269,9 @@ public class MyUDG {
 
         String dfs = dfs(edges, nodes, 'B');
         System.out.println(dfs);
+
+        String bfs = bfs(edges, nodes, 'A');
+        System.out.println(bfs);
     }
 
 }
