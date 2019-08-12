@@ -475,10 +475,10 @@ public class ListUDG {
 		// 采用已有的"图"
 		pG = new ListUDG(vexs, edges);
 
-		// pG.print(); // 打印图
-		// pG.DFS(); // 深度优先遍历
-		// pG.BFS(); // 广度优先遍历
-		// pG.prim(0); // prim算法生成最小生成树
+		 pG.print(); // 打印图
+		 pG.DFS(); // 深度优先遍历
+		 pG.BFS(); // 广度优先遍历
+		 pG.prim(0); // prim算法生成最小生成树
 
 		pG.kruskal(); // Kruskal算法生成最小生成树
 	}
