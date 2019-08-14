@@ -35,9 +35,9 @@ public class FindTreeNode {
     }
 
     private void midOrder(TreeNode node, List<Integer> res, int left, int right) {
-        if (node.left != null && node.left.val >= left)
+        if (node.left != null)
             midOrder(node.left, res, left, right);
-        if (node.val >= left)
+        if (node.val >= left && node.val <= right)
             res.add(node.val);
         if (node.right != null)
             midOrder(node.right, res, left, right);
