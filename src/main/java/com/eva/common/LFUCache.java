@@ -10,7 +10,7 @@ import java.util.*;
 public class LFUCache {
     private final int capacity;
 
-    private final LinkedList<KeyWrapper> usedList;
+    private final TreeSet<KeyWrapper> usedSet;
 
     private Map<KeyWrapper, Integer> map;
 
@@ -20,10 +20,6 @@ public class LFUCache {
         private int used = 0;
 
         private long timestamp = 0L;
-
-        public static KeyWrapper valueOf(int key) {
-            return new KeyWrapper(key);
-        }
 
         public KeyWrapper(int key) {
             this.key = key;
@@ -42,8 +38,6 @@ public class LFUCache {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj == null)
-                return false;
             if (!(obj instanceof KeyWrapper))
                 return false;
             KeyWrapper keyWrapper = (KeyWrapper) obj;
@@ -59,7 +53,7 @@ public class LFUCache {
         // do intialization if necessary
         this.capacity = capacity;
         this.map = new HashMap<>(capacity);
-        this.usedList = new LinkedList<>();
+        this.usedSet = new TreeSet<>();
     }
 
     /*
@@ -68,25 +62,71 @@ public class LFUCache {
      * @return: nothing
      */
     public void set(int key, int value) {
-        if (usedList.size() == capacity) {
-            Collections.sort(usedList);
-            KeyWrapper keyWrapper = usedList.remove(0);
-            map.remove(keyWrapper);
-        }
-        // write your code here
-        KeyWrapper keyWrapper = new KeyWrapper(key);
-        map.put(keyWrapper, value);
-        Iterator<KeyWrapper> iter = usedList.iterator();
-        while (iter.hasNext()) {
-            KeyWrapper next = iter.next();
-            if (next.key == key) {
-                next.timestamp = System.nanoTime();
-                return;
+        // 如果缓存满了
+        if (usedSet.size() == capacity) {
+            if (isExisted(key)) {   // 添加的元素已存在
+                updateStates(key, value);
+            } else {
+                usedSet.pollFirst();
+                addNewKey(key, value);
+            }
+        } else { // 直接添加
+            if (isExisted(key)) {   // 添加的元素已存在
+                updateStates(key, value);
+            } else {
+                addNewKey(key, value);
             }
         }
-        keyWrapper.timestamp = System.nanoTime();
-        usedList.add(keyWrapper);
     }
+
+    /**
+     * 向缓存中添加新 key
+     *
+     * @param key   新节点 key
+     * @param value 缓存值
+     */
+    private void addNewKey(int key, int value) {
+        KeyWrapper keyWrapper = new KeyWrapper(key);
+        keyWrapper.timestamp = System.nanoTime();
+        usedSet.add(keyWrapper);
+        map.put(keyWrapper, value);
+    }
+
+    /**
+     * 更新已存在 key 的状态信息
+     *
+     * @param key 目标 key
+     */
+    private void updateStates(int key, int value) {
+        Iterator<KeyWrapper> iter = usedSet.iterator();
+        KeyWrapper next = null;
+        while (iter.hasNext()) {
+            next = iter.next();
+            if (next.key == key) {
+                next.used = next.used + 1;
+                next.timestamp = System.nanoTime();
+                map.put(next, value);
+                iter.remove();
+                break;
+            }
+        }
+        usedSet.add(next);
+    }
+
+    /**
+     * 看 LFU cache 中是否已经存在对应 key 的元素
+     *
+     * @param key 目标 key
+     * @return true 存在，false 不存在
+     */
+    private boolean isExisted(int key) {
+        for (KeyWrapper keyWrapper : usedSet) {
+            if (keyWrapper.key == key)
+                return true;
+        }
+        return false;
+    }
+
 
     /*
      * @param key: An integer
@@ -94,37 +134,39 @@ public class LFUCache {
      */
     public int get(int key) {
         // write your code here
-        Iterator<KeyWrapper> iter = usedList.iterator();
-        KeyWrapper next = null;
+        Iterator<KeyWrapper> iter = usedSet.iterator();
+        KeyWrapper keyWrapper = null;
         while (iter.hasNext()) {
-            next = iter.next();
+            KeyWrapper next = iter.next();
             if (next.key == key) {
-                break;
+                keyWrapper = next;
+                next.used = next.used + 1;
+                next.timestamp = System.nanoTime();
+                iter.remove();
             }
-            next = null;
         }
-        if (next == null)
+        if (keyWrapper == null)
             return -1;
-        next.used = next.used + 1;
-        next.timestamp = System.nanoTime();
-        return map.get(next);
+        usedSet.add(keyWrapper);
+        return map.get(keyWrapper);
     }
 
     public static void main(String[] args) {
         LFUCache cache = new LFUCache(3);
-        cache.set(33, 219);
-        cache.get(39);
-        cache.set(96, 56);
-        cache.get(129);
-        cache.get(115);
-        cache.get(112);
-        cache.set(3, 280);
-        cache.get(40);
-        cache.set(85, 193);
-        cache.set(10, 10);
-        cache.set(100, 136);
-        cache.set(12, 66);
-        cache.set(81, 261);
-        cache.set(33, 58);
+        cache.set(1, 10);
+        cache.set(2, 20);
+        cache.set(3, 30);
+        System.out.println(cache.get(1));
+        cache.set(4, 40);
+        System.out.println(cache.get(4));
+        System.out.println(cache.get(3));
+        System.out.println(cache.get(2));
+        System.out.println(cache.get(1));
+        cache.set(5, 50);
+        System.out.println(cache.get(1));
+        System.out.println(cache.get(2));
+        System.out.println(cache.get(3));
+        System.out.println(cache.get(4));
+        System.out.println(cache.get(5));
     }
 }
