@@ -6,6 +6,8 @@ package com.eva.solution.leetcode;
  * @Email g863821569@gmail.com
  */
 
+import java.util.Arrays;
+
 /**
  * 给定一个无序的整数数组，找到其中最长上升子序列的长度。
  * <p>
@@ -42,7 +44,36 @@ public class Solution300 {
         return max;
     }
 
+    public static int lengthOfLISFast(int[] nums) {
+        int n = nums.length;
+        int[] tails = new int[n];
+        int len = 0;
+        for (int num : nums) {
+            int index = findPos(tails, len, num);
+            tails[index] = num;
+            if (index == len) {
+                len++;
+            }
+        }
+        return len;
+    }
+
+    private static int findPos(int[] eles, int r, int num) {
+        int l = 0, h = r;
+        while (l < h) {
+            int mid = l + (h - l) / 2;
+            if (eles[mid] == num) {
+                return mid;
+            } else if (eles[mid] > num) {
+                h = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return l;
+    }
+
     public static void main(String[] args) {
-        System.out.println(lengthOfLIS(new int[]{10, 9, 2, 5, 3, 7, 200, 18, 101, 102, 103}));
+        System.out.println(lengthOfLISFast(new int[]{2, 15, 3, 7, 8, 6, 18}));
     }
 }
