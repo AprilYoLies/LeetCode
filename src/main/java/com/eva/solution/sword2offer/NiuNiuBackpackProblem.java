@@ -45,44 +45,34 @@ public class NiuNiuBackpackProblem {
             System.out.println((int) Math.pow(2, vols.length));
             return;
         }
-//        int methods = calPutMethods(space, vols);
-//        System.out.println(methods);
-        dfs(0, 0, vols.length, vols, space);
-        System.out.println(count + 1);
+        int methods = calPutMethodsRecursive(vols.length, space, vols);
+        System.out.println(methods);
+//        calPutMethods(0, 0, vols, space);
+//        System.out.println(count + 1);
     }
 
-    // method[i][s] = method[i - 1][s] + method[i - 1][s - v[i]]
-    private static int calPutMethods(int space, int[] vols) {
-        int[][] methods = new int[vols.length + 1][space + 1];
-        for (int i = 1; i < space + 1; i++) {
-            methods[1][i] = 1;
-        }
-        for (int i = 1; i < vols.length + 1; i++) {
-            methods[i][1] = vols[i - 1] <= 1 ? 1 : 0;
-        }
-        for (int i = 2; i < vols.length + 1; i++) {
-            for (int j = 2; j < space + 1; j++) {
-                if (j - vols[i - 1] >= 1)
-                    methods[i][j] = methods[i - 1][j] + methods[i - 1][j - vols[i - 1]];
-                else
-                    methods[i][j] = methods[i - 1][j];
+    private static int calPutMethodsRecursive(int length, int space, int[] vols) {
+        if (space <= 0)
+            return 0;
+        if (length == 1) {
+            if (vols[length - 1] <= space) {
+                return 2;
+            } else {
+                return 1;
             }
         }
-        return methods[vols.length][space];
+        return calPutMethodsRecursive(length - 1, space, vols) +
+                calPutMethodsRecursive(length - 1, space - vols[length - 1], vols);
     }
 
-    private static void dfs(long sum, int cur, int n, int[] nums, int total) {
-        if (cur < n) {
-            if (sum > total) {
-                return;
-            }
-            // 不添加这件零食
-            dfs(sum, cur + 1, n, nums, total);
-            // 当前这种添加方式合理,添加这件零食
-            if (sum + nums[cur] <= total) {
-                count++;
-                dfs(sum + nums[cur], cur + 1, n, nums, total);
-            }
+    private static void calPutMethods(long sum, int cur, int[] nums, int total) {
+        if (sum > total || cur >= nums.length) {
+            return;
+        }
+        calPutMethods(sum, cur + 1, nums, total);
+        if (sum + nums[cur] <= total) {
+            count++;
+            calPutMethods(sum + nums[cur], cur + 1, nums, total);
         }
     }
 
