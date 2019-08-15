@@ -6,8 +6,6 @@ package com.eva.solution.leetcode;
  * @Email g863821569@gmail.com
  */
 
-import java.util.Arrays;
-
 /**
  * 给定一个无序的整数数组，找到其中最长上升子序列的长度。
  * <p>
@@ -45,35 +43,37 @@ public class Solution300 {
     }
 
     public static int lengthOfLISFast(int[] nums) {
-        int n = nums.length;
-        int[] tails = new int[n];
-        int len = 0;
+        if (nums.length <= 1)
+            return nums.length;
+        int[] eles = new int[nums.length];
+        int pos;
+        int max = 0;
         for (int num : nums) {
-            int index = findPos(tails, len, num);
-            tails[index] = num;
-            if (index == len) {
-                len++;
+            pos = findPos(eles, max, num);
+            if (pos + 1 > max) {
+                max = pos + 1;
             }
         }
-        return len;
+        return max;
     }
 
     private static int findPos(int[] eles, int r, int num) {
-        int l = 0, h = r;
-        while (l < h) {
-            int mid = l + (h - l) / 2;
+        int l = 0;
+        while (l < r) {
+            int mid = (l + r) / 2;
             if (eles[mid] == num) {
                 return mid;
-            } else if (eles[mid] > num) {
-                h = mid;
-            } else {
+            } else if (eles[mid] < num) {
                 l = mid + 1;
+            } else {
+                r = mid;
             }
         }
+        eles[l] = num;
         return l;
     }
 
     public static void main(String[] args) {
-        System.out.println(lengthOfLISFast(new int[]{2, 15, 3, 7, 8, 6, 18}));
+        System.out.println(lengthOfLISFast(new int[]{1, 3, 6, 7, 9, 4, 10, 5, 6}));
     }
 }
