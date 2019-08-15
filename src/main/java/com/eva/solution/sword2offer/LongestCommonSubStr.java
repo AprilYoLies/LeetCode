@@ -22,8 +22,8 @@ public class LongestCommonSubStr {
         while (sc.hasNextLine()) {
             String line = sc.nextLine();
             String[] ab = line.split(" ");
-            int len = longestCommonSubStr(ab[0], ab[1]);
-            System.out.println(len);
+            int len1 = longestCommonSubStr1(ab[0], ab[1]);
+            System.out.println(len1);
         }
     }
 
@@ -39,5 +39,26 @@ public class LongestCommonSubStr {
             }
         }
         return res[s1.length()][s2.length()];
+    }
+
+    private static int longestCommonSubStr1(String s1, String s2) {
+        int[][] res = new int[s1.length()][s2.length()];
+        res[0][0] = s1.charAt(0) == s2.charAt(0) ? 1 : 0;
+        for (int i = 1; i < s2.length(); i++) {
+            res[0][i] = s1.charAt(0) == s2.charAt(i) ? 1 : res[0][i - 1];
+        }
+        for (int i = 1; i < s1.length(); i++) {
+            res[i][0] = s1.charAt(i) == s2.charAt(0) ? 1 : res[i - 1][0];
+        }
+        for (int i = 1; i < s1.length(); i++) {
+            for (int j = 1; j < s2.length(); j++) {
+                boolean equals = s1.charAt(i) == s2.charAt(j);
+                if (equals)
+                    res[i][j] = res[i - 1][j - 1] + 1;
+                else
+                    res[i][j] = Math.max(res[i][j - 1], res[i - 1][j]);
+            }
+        }
+        return res[s1.length() - 1][s2.length() - 1];
     }
 }
