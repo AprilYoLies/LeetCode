@@ -32,8 +32,33 @@ public class Solution416 {
         return dp[nums.length - 1][half];
     }
 
+    private static boolean canPartitionMinSpace(int[] nums) {
+        if (nums.length == 0)
+            return true;
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        if (sum % 2 == 1)
+            return false;
+        int half = sum / 2;
+        boolean[] dp = new boolean[half + 1];
+        for (int i = 1; i < half + 1; i++) {
+            dp[i] = nums[0] == i;
+            if (dp[i])
+                break;
+        }
+        for (int i = 1; i < nums.length; i++) {
+            for (int j = half; j >= 1 && j >= nums[i]; j--) {
+                dp[j] = dp[j] || dp[j - nums[i]];
+            }
+        }
+        return dp[half];
+    }
+
 
     public static void main(String[] args) {
         System.out.println(canPartition(new int[]{100, 100, 100, 100, 100, 100, 100}));
+        System.out.println(canPartitionMinSpace(new int[]{100, 100, 100, 100, 100, 100, 100}));
     }
 }
