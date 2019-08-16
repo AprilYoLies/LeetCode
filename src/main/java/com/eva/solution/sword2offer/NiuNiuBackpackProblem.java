@@ -29,8 +29,6 @@ import java.util.Scanner;
  * 8
  */
 public class NiuNiuBackpackProblem {
-    private static int count = 0;
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int space = Integer.parseInt(sc.nextLine().split(" ")[1]);
@@ -41,14 +39,30 @@ public class NiuNiuBackpackProblem {
             vols[i] = Integer.parseInt(sVols[i]);
             total += vols[i];
         }
+
         if (total <= space) {
             System.out.println((int) Math.pow(2, vols.length));
             return;
         }
+
         int methods = calPutMethodsRecursive(vols.length, space, vols);
         System.out.println(methods);
-//        calPutMethods(0, 0, vols, space);
-//        System.out.println(count + 1);
+
+        System.out.println(calPutMethods(0, 0, vols, space) + 1);
+
+        System.out.println(niuNiuBackpackRecursive(0, space, vols));
+    }
+
+    private static int niuNiuBackpackRecursive(int cur, int space, int[] vols) {
+        if (space <= 0)
+            return 0;
+        if (cur == vols.length - 1) {
+            if (vols[cur] <= space)
+                return 2;
+            else
+                return 1;
+        }
+        return niuNiuBackpackRecursive(cur + 1, space, vols) + niuNiuBackpackRecursive(cur + 1, space - vols[cur], vols);
     }
 
     private static int calPutMethodsRecursive(int length, int space, int[] vols) {
@@ -65,15 +79,17 @@ public class NiuNiuBackpackProblem {
                 calPutMethodsRecursive(length - 1, space - vols[length - 1], vols);
     }
 
-    private static void calPutMethods(long sum, int cur, int[] nums, int total) {
-        if (sum > total || cur >= nums.length) {
-            return;
+    private static int calPutMethods(long sum, int cur, int[] vols, int space) {
+        int count = 0;
+        if (sum > space || cur >= vols.length) {
+            return 0;
         }
-        calPutMethods(sum, cur + 1, nums, total);
-        if (sum + nums[cur] <= total) {
+        count += calPutMethods(sum, cur + 1, vols, space);
+        if (sum + vols[cur] <= space) {
             count++;
-            calPutMethods(sum + nums[cur], cur + 1, nums, total);
+            count += calPutMethods(sum + vols[cur], cur + 1, vols, space);
         }
+        return count;
     }
 
 }
