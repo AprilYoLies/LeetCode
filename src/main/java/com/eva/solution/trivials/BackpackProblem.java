@@ -28,6 +28,28 @@ public class BackpackProblem {
     }
 
     /**
+     * 背包问题，空间优化
+     *
+     * @param W       背包的总容量
+     * @param N       物品的件数
+     * @param weights 每一件物品的重量
+     * @param values  每一件物品的价值
+     * @return 所能放入物品的最高价值
+     */
+    public int knapsack2(int W, int N, int[] weights, int[] values) {
+        int[] dp = new int[W + 1];
+        for (int i = 1; i <= N; i++) {
+            int w = weights[i - 1], v = values[i - 1];
+            for (int j = W; j >= 1; j--) {
+                if (j >= w) {
+                    dp[j] = Math.max(dp[j], dp[j - w] + v);
+                }
+            }
+        }
+        return dp[W];
+    }
+
+    /**
      * @param m 表示背包的最大容量
      * @param n 表示商品个数
      * @param w 表示商品重量数组
