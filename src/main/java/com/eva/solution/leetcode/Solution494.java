@@ -75,6 +75,17 @@ public class Solution494 {
         return dp[W];
     }
 
+    public static int findTargetSumWaysDFS(int[] nums, int S) {
+        return findTargetSumWaysDFS(0, nums, S);
+    }
+
+    public static int findTargetSumWaysDFS(int cur, int[] nums, int sum) {
+        if (cur == nums.length)
+            return sum == 0 ? 1 : 0;
+        return findTargetSumWaysDFS(cur + 1, nums, sum + nums[cur]) +
+                findTargetSumWaysDFS(cur + 1, nums, sum - nums[cur]);
+    }
+
     private static int computeArraySum(int[] nums) {
         int sum = 0;
         for (int num : nums) {
@@ -85,5 +96,6 @@ public class Solution494 {
 
     public static void main(String[] args) {
         System.out.println(findTargetSumWays(new int[]{1, 1, 1, 1, 1}, 3));
+        System.out.println(findTargetSumWaysDFS(new int[]{1, 1, 1, 1, 1}, 3));
     }
 }
