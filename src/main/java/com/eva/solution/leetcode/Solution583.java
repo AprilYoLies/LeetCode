@@ -33,6 +33,26 @@ public class Solution583 {
         return word1.length() + word2.length() - dp[word1.length() - 1][word2.length() - 1] * 2;
     }
 
+    public static int minDistance2(String word1, String word2) {
+        if (word1.length() == 0 || word2.length() == 0)
+            return Math.max(word1.length(), word2.length());
+        int[][] dp = new int[word1.length() + 1][word2.length() + 1];
+        for (int i = 0; i <= word1.length(); i++) {
+            for (int j = 0; j <= word2.length(); j++) {
+                if (i == 0 || j == 0) {
+                    dp[i][j] = i + j;
+                    continue;
+                }
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + 1;
+                }
+            }
+        }
+        return dp[word1.length()][word2.length()];
+    }
+
     public static int minDistance1(String word1, String word2) {
         int[][] dp = new int[word1.length() + 1][word2.length() + 1];
         for (int i = 0; i <= word1.length(); i++) {
@@ -51,5 +71,6 @@ public class Solution583 {
     public static void main(String[] args) {
         System.out.println(minDistance("a", "ab"));
         System.out.println(minDistance1("sea", "eat"));
+        System.out.println(minDistance2("1", "1b"));
     }
 }
