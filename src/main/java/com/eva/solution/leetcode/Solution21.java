@@ -6,7 +6,7 @@ package com.eva.solution.leetcode;
  * @Email g863821569@gmail.com
  */
 public class Solution21 {
-    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    public ListNode mergeTwoLists1(ListNode l1, ListNode l2) {
         ListNode head;
         ListNode curl1;
         ListNode curl2;
@@ -46,5 +46,43 @@ public class Solution21 {
             curl1 = l1next;
         }
         return head;
+    }
+
+    public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode l1Cur = l1, l2Cur = l2, nHead = null, tail = null;
+        if (l1 == null || l2 == null)
+            return l1 == null ? l2 : l1;
+        while (true) {
+            if (l1Cur != null && l2Cur != null) {
+                if (l1Cur.val < l2Cur.val) {
+                    if (nHead == null) {
+                        nHead = l1Cur;
+                        tail = nHead;
+                    } else {
+                        tail.next = l1Cur;
+                        tail = tail.next;
+                    }
+                    l1Cur = l1Cur.next;
+                    tail.next = null;
+                } else {
+                    if (nHead == null) {
+                        nHead = l2Cur;
+                        tail = nHead;
+                    } else {
+                        tail.next = l2Cur;
+                        tail = tail.next;
+                    }
+                    l2Cur = l2Cur.next;
+                    tail.next = null;
+                }
+            } else if (l1Cur != null) {
+                tail.next = l1Cur;
+                break;
+            } else {
+                tail.next = l2Cur;
+                break;
+            }
+        }
+        return nHead;
     }
 }
