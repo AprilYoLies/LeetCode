@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class Soution127 {
+public class Solution127 {
     public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
         wordList.add(beginWord);
         int N = wordList.size();
