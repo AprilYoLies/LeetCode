@@ -1,12 +1,9 @@
 package com.eva.solution.leetcode;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class Solution127 {
-    public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
+    public static int ladderLength1(String beginWord, String endWord, List<String> wordList) {
         wordList.add(beginWord);
         int N = wordList.size();
         int start = N - 1;
@@ -71,6 +68,53 @@ public class Solution127 {
         return 0;
     }
 
+    public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        if (!wordList.contains(endWord) || beginWord.length() != endWord.length()) return 0;
+        wordList.add(0, beginWord);
+        wordList.add(endWord);
+        Map<String, List<String>> map = getWordsMap(wordList);
+        boolean[] visited = new boolean[wordList.size()];
+        visited[0] = true;
+        Queue<String> queue = new LinkedList<>();
+        queue.add(beginWord);
+        int distance = 0;
+
+        while (!queue.isEmpty()) {
+            distance++;
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                String from = queue.poll();
+                if (endWord.equals(from)) return distance;
+                List<String> tos = map.get(from);
+                for (String to : tos) {
+                    if (visited[wordList.indexOf(to)]) continue;
+                    visited[wordList.indexOf(to)] = true;
+                    queue.offer(to);
+                }
+            }
+        }
+        return 0;
+    }
+
+    private static Map<String, List<String>> getWordsMap(List<String> wordList) {
+        Map<String, List<String>> map = new HashMap<>(wordList.size());
+        for (String word : wordList) {
+            List<String> words = new ArrayList<>();
+            for (String str : wordList) {
+                int c = 0;
+                for (int i = 0; i < str.length(); i++) {
+                    if (word.charAt(i) != str.charAt(i)) {
+                        if (c++ == 1) break;
+                    }
+                }
+                if (c == 1)
+                    words.add(str);
+            }
+            map.put(word, words);
+        }
+        return map;
+    }
+
     public static void main(String[] args) {
         List<String> words = new ArrayList<>();
         words.add("hot");
@@ -79,6 +123,7 @@ public class Solution127 {
         words.add("lot");
         words.add("log");
         words.add("cog");
+        System.out.println(ladderLength1("hit", "cog", words));
         System.out.println(ladderLength("hit", "cog", words));
     }
 }
