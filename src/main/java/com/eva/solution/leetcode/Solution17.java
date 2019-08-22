@@ -1,5 +1,6 @@
 package com.eva.solution.leetcode;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,8 +11,6 @@ import java.util.List;
  */
 public class Solution17 {
     private static final String[][] table = {
-            {"a", "b", "c", ""},
-            {"a", "b", "c", ""},
             {"a", "b", "c", ""},
             {"d", "e", "f", ""},
             {"g", "h", "i", ""},
@@ -49,5 +48,31 @@ public class Solution17 {
                 }
             }
         }
+    }
+
+    public static List<String> letterCombinations1(String digits) {
+        List<String> results = new ArrayList<>();
+        if ("".equals(digits)) return results;
+        findResults(results, 0, digits, new StringBuilder());
+        return results;
+    }
+
+    private static void findResults(List<String> results, int i, String digits, StringBuilder pre) {
+        if (i == digits.length()) {
+            results.add(pre.toString());
+            return;
+        }
+        int idx = digits.charAt(i) - '0' - 2;
+        String[] strs = table[idx];
+        for (String str : strs) {
+            if ("".equals(str)) continue;
+            pre.append(str);
+            findResults(results, i + 1, digits, pre);
+            pre.deleteCharAt(pre.length() - 1);
+        }
+    }
+
+    public static void main(String[] args) {
+        letterCombinations1("");
     }
 }
