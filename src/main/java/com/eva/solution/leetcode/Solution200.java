@@ -4,7 +4,7 @@ public class Solution200 {
     private static int m, n;
     private static int[][] direction = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
-    public static int numIslands(char[][] grid) {
+    public static int numIslands1(char[][] grid) {
         if (grid == null || grid.length == 0) {
             return 0;
         }
@@ -29,6 +29,29 @@ public class Solution200 {
         grid[i][j] = '0';
         for (int[] d : direction) {
             dfs(grid, i + d[0], j + d[1]);
+        }
+    }
+
+    public static int numIslands(char[][] grid) {
+        if (grid == null || grid.length == 0) return 0;
+        int r = grid.length, c = grid[0].length;
+        int islands = 0;
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (grid[i][j] == '0') continue;
+                islands++;
+                calAreaSize(grid, i, j);
+            }
+        }
+        return islands;
+    }
+
+    private static void calAreaSize(char[][] grid, int i, int j) {
+        if (i < 0 || i == grid.length || j < 0 || j == grid[0].length || grid[i][j] == '0') return;
+        int[][] directions = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        grid[i][j] = '0';
+        for (int[] direction : directions) {
+            calAreaSize(grid, i + direction[0], j + direction[1]);
         }
     }
 
