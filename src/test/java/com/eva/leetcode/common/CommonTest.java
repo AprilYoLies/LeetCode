@@ -165,6 +165,29 @@ public class CommonTest {
         System.in.read();
     }
 
+    @Test
+    public void listTest() {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            list.add(0);
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("a", "b");
+        Map<String, String> cmap = new ConcurrentHashMap<>();
+        cmap.put("a", "b");
+        ThreadLocal<Integer> tl = new ThreadLocal<>();
+        tl.set(123);
+        tl.get();
+        Queue<Integer> abq = new ArrayBlockingQueue<>(10);
+        Queue<Integer> lbq = new LinkedBlockingQueue<>(10);
+        Queue<Integer> pbq = new PriorityBlockingQueue<>(10);
+        for (int i = 0; i < 11; i++) {
+            abq.offer(i);
+            lbq.offer(i);
+            pbq.offer(i);
+        }
+    }
+
     private class ExpensiveTask implements Runnable {
 
         @Override
