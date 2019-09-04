@@ -42,7 +42,7 @@ public class Solution300 {
         return max;
     }
 
-    public static int lengthOfLISFast(int[] nums) {
+    public static int lengthOfLISFast1(int[] nums) {
         if (nums.length <= 1)
             return nums.length;
         int[] eles = new int[nums.length];
@@ -92,7 +92,38 @@ public class Solution300 {
         return max;
     }
 
+    public static int lengthOfLISFast(int[] nums) {
+        if (nums.length <= 1) return nums.length;
+        int max = 1;
+        for (int i = 1; i < nums.length; i++) {
+            int pos = findPosition(nums, nums[i], max);
+            if (pos > max) max = pos;
+        }
+        return max;
+    }
+
+    private static int findPosition(int[] nums, int num, int max) {
+        int l = 0, r = max - 1;
+        while (l < r) {
+            int mid = (l + r) >>> 1;
+            if (nums[mid] == num) return mid;
+            if (nums[mid] < num) l = mid + 1;
+            else r = mid - 1;
+        }
+        for (int i = r - 1; i <= l + 1; i++) {
+            if (i >= 0 && i <= max - 1) {
+                if (nums[i] > num) {
+                    nums[i] = num;
+                    return i + 1;
+                }
+                if (nums[i] == num) return i + 1;
+            }
+        }
+        nums[max] = num;
+        return max + 1;
+    }
+
     public static void main(String[] args) {
-        System.out.println(lengthOfLIS(new int[]{1, 3, 6, 7, 9, 4, 10, 5, 6}));
+        System.out.println(lengthOfLISFast(new int[]{10, 9, 2, 5, 3, 7, 101, 18}));
     }
 }
