@@ -20,7 +20,7 @@ package com.eva.solution.leetcode;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class Solution300 {
-    public static int lengthOfLIS(int[] nums) {
+    public static int lengthOfLIS1(int[] nums) {
         if (nums.length <= 1)
             return nums.length;
         int[] len = new int[nums.length];
@@ -73,7 +73,26 @@ public class Solution300 {
         return l;
     }
 
+    public static int lengthOfLIS(int[] nums) {
+        if (nums.length <= 1) return nums.length;
+        int[] dp = new int[nums.length];
+        for (int i = 0; i < dp.length; i++) {
+            int max = 0;
+            for (int j = i - 1; j >= 0; j--) {
+                if (nums[j] < nums[i] && dp[j] > max) {
+                    max = dp[j];
+                }
+            }
+            dp[i] = max + 1;
+        }
+        int max = dp[0];
+        for (int i : dp) {
+            if (i > max) max = i;
+        }
+        return max;
+    }
+
     public static void main(String[] args) {
-        System.out.println(lengthOfLISFast(new int[]{1, 3, 6, 7, 9, 4, 10, 5, 6}));
+        System.out.println(lengthOfLIS(new int[]{1, 3, 6, 7, 9, 4, 10, 5, 6}));
     }
 }
