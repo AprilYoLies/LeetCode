@@ -84,6 +84,8 @@ public class HeapSort {
         int i;
         int[] a = {30, 40, 60, 10, 20, 50, 70, 25, 33, 12, 90, 100, 87, 59, 39, 101};
 
+        int[] b = {30, 40, 60, 10, 20, 50, 70, 25, 33, 12, 90, 100, 87, 59, 39, 101};
+
         System.out.print("before sort:");
         for (i = 0; i < a.length; i++)
             System.out.printf("%d ", a[i]);
@@ -95,5 +97,60 @@ public class HeapSort {
         for (i = 0; i < a.length; i++)
             System.out.printf("%d ", a[i]);
         System.out.print("\n");
+
+        heapSort1(b);
+
+        System.out.print("after  sort:");
+        for (i = 0; i < b.length; i++)
+            System.out.printf("%d ", b[i]);
+        System.out.print("\n");
+    }
+
+    private static void heapSort1(int[] a) {
+        toMaxHeap(a);
+        for (int i = 0; i < a.length; i++) {
+            sortByHeap(a, a.length - 1 - i);
+        }
+    }
+
+    private static void sortByHeap(int[] a, int cur) {
+        int t = a[0];
+        a[0] = a[cur];
+        a[cur] = t;
+        fixHeapDown(a, 0, cur);
+    }
+
+    private static void fixHeapDown(int[] a, int i, int b) {
+        int l = i * 2 + 1;
+        int r = i * 2 + 2;
+        int target = -1;
+        if (l >= b) return;
+        if (r >= b) target = l;
+        else {
+            target = a[l] > a[r] ? l : r;
+        }
+        if (a[i] < a[target]) {
+            int t = a[i];
+            a[i] = a[target];
+            a[target] = t;
+        } else return;
+        fixHeapDown(a, target, b);
+    }
+
+    private static void toMaxHeap(int[] a) {
+        for (int i = 0; i < a.length; i++) {
+            fixHeapUp(a, i);
+        }
+    }
+
+    private static void fixHeapUp(int[] a, int i) {
+        if (i == 0) return;
+        int p = (i - 1) / 2;
+        if (a[p] < a[i]) {
+            int t = a[p];
+            a[p] = a[i];
+            a[i] = t;
+        } else return;
+        fixHeapUp(a, p);
     }
 }

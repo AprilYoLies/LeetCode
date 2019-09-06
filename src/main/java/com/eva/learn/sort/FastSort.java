@@ -48,11 +48,27 @@ public class FastSort {
         fastSort(arr, lp + 1, r);
     }
 
+    private static void flashSort(int[] nums, int l, int r) {
+        if (l >= r) return;
+        int from = l, to = r, mid = nums[l];
+        while (from < to) {
+            while (from < to && nums[to] >= mid) to--;
+            nums[from] = nums[to];
+            while (from < to && nums[from] <= mid) from++;
+            nums[to] = nums[from];
+        }
+        nums[from] = mid;
+        flashSort(nums, l, from - 1);
+        flashSort(nums, from + 1, r);
+    }
+
     public static void main(String[] args) {
         int i;
         int[] a = {30, 40, 60, 10, 20, 50, 70, 25, 33, 12, 90, 100, 87, 59, 39, 101};
 
         int[] b = {30, 40, 60, 10, 20, 50, 70, 25, 33, 12, 90, 100, 87, 59, 39, 101};
+
+        int[] c = {30, 40, 60, 10, 20, 50, 70, 25, 33, 12, 90, 100, 87, 59, 39, 101};
 
         System.out.print("before sort:");
         for (i = 0; i < a.length; i++)
@@ -71,6 +87,13 @@ public class FastSort {
         System.out.print("after  sort:");
         for (i = 0; i < a.length; i++)
             System.out.printf("%d ", b[i]);
+        System.out.print("\n");
+
+        flashSort(c, 0, c.length - 1);
+
+        System.out.print("after  sort:");
+        for (i = 0; i < c.length; i++)
+            System.out.printf("%d ", c[i]);
         System.out.print("\n");
     }
 }
