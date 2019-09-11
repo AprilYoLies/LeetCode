@@ -199,6 +199,23 @@ public class CommonTest {
 
             }
         }
+    }
 
+    @Test
+    public void testTryFinally() {
+        System.out.println(tryFinally());
+    }
+
+    private int tryFinally() {
+        int a = 10;
+        try {
+            a = 1 / 0;
+            return ++a;
+        } catch (Exception e) {
+            return a + 5;
+        } finally {
+            a = 20;
+            System.out.println("finally " + a);
+        }
     }
 }
