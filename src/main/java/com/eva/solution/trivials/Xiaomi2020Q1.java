@@ -1,12 +1,15 @@
 package com.eva.solution.trivials;
 
 import java.util.Scanner;
-import java.util.Stack;
 
 /**
  * @Author EvaJohnson
  * @Date 2019-09-06
  * @Email g863821569@gmail.com
+ */
+
+/**
+ * 1(2(3,4(,5)),6(7,))
  */
 public class Xiaomi2020Q1 {
 
@@ -16,19 +19,28 @@ public class Xiaomi2020Q1 {
     ******************************开始写代码******************************/
     static String solution(String input) {
         StringBuilder sb = new StringBuilder();
-        Stack<Character> stack = new Stack<>();
+        getMidString(input, sb);
+        return sb.toString();
+    }
+
+    private static void getMidString(String input, StringBuilder sb) {
+        if (input.length() <= 0) return;
+        int count = 0;
+        String left = "";
+        String right = "";
         for (int i = 0; i < input.length(); i++) {
-            if (isNumber(input.charAt(i))) stack.push(input.charAt(i));
-            else if (input.charAt(i) == ',') {
-                if (input.charAt(i - 1) == ')' || isNumber(input.charAt(i - 1))) {
-                    sb.append(stack.pop()).append(stack.pop());
-                } else {
-                    sb.append(stack.pop());
-                }
+            char c = input.charAt(i);
+            if (c == '(') count++;
+            else if (c == ')') count--;
+            else if (c == ',' && count == 1) {
+                left = input.substring(2, i);
+                right = input.substring(i + 1, input.length() - 1);
             }
         }
-        while (!stack.isEmpty()) sb.append(stack.pop());
-        return sb.toString();
+        getMidString(left, sb);
+        if (isNumber(input.charAt(0)))
+            sb.append(input.charAt(0));
+        getMidString(right, sb);
     }
 
     private static boolean isNumber(char c) {
