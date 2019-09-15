@@ -45,22 +45,12 @@ public class LFUCache {
         }
     }
 
-
-    /*
-     * @param capacity: An integer
-     */
     public LFUCache(int capacity) {
-        // do intialization if necessary
         this.capacity = capacity;
         this.map = new HashMap<>(capacity);
         this.usedSet = new TreeSet<>();
     }
 
-    /*
-     * @param key: An integer
-     * @param value: An integer
-     * @return: nothing
-     */
     public void set(int key, int value) {
         // 如果缓存满了
         if (usedSet.size() == capacity) {
@@ -127,13 +117,7 @@ public class LFUCache {
         return false;
     }
 
-
-    /*
-     * @param key: An integer
-     * @return: An integer
-     */
     public int get(int key) {
-        // write your code here
         Iterator<KeyWrapper> iter = usedSet.iterator();
         KeyWrapper keyWrapper = null;
         while (iter.hasNext()) {
@@ -153,20 +137,16 @@ public class LFUCache {
 
     public static void main(String[] args) {
         LFUCache cache = new LFUCache(3);
-        cache.set(1, 10);
-        cache.set(2, 20);
-        cache.set(3, 30);
+        cache.set(2, 2);
+        cache.set(1, 1);
+        System.out.println(cache.get(2));
         System.out.println(cache.get(1));
-        cache.set(4, 40);
-        System.out.println(cache.get(4));
+        System.out.println(cache.get(2));
+        cache.set(3, 3);
+        cache.set(4, 4);
         System.out.println(cache.get(3));
         System.out.println(cache.get(2));
         System.out.println(cache.get(1));
-        cache.set(5, 50);
-        System.out.println(cache.get(1));
-        System.out.println(cache.get(2));
-        System.out.println(cache.get(3));
         System.out.println(cache.get(4));
-        System.out.println(cache.get(5));
     }
 }
