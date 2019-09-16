@@ -257,12 +257,29 @@ public class CommonTest {
         Future<Object> f1 = executor.submit(c1);
 
         FutureTask<Integer> ft = new FutureTask<>(() -> {
-            Thread.sleep(1000);
+            Thread.sleep(100);
             return 2;
         });
         new Thread(ft).start();
 
         while (!(f1.isDone() && ft.isDone())) ;
         System.out.println("finished");
+    }
+
+    @Test
+    public void testCollectionPutNull() {
+        List<Integer> list = new ArrayList<>();
+        Map<Integer, Integer> map = new HashMap<>();
+        Set<Integer> set = new HashSet<>();
+        list.add(1);
+        list.add(null);
+        list.add(null);
+        map.put(1, null);
+        map.put(2, null);
+        map.put(null, 1);
+        map.put(null, 2);
+        System.out.println(map.get(1));
+        set.add(null);
+        set.add(null);
     }
 }
