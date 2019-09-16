@@ -249,4 +249,20 @@ public class CommonTest {
         lock.unlock();
         s.acquire();
     }
+
+    @Test
+    public void testFutureTask() {
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+        Callable<Object> c1 = () -> 1;
+        Future<Object> f1 = executor.submit(c1);
+
+        FutureTask<Integer> ft = new FutureTask<>(() -> {
+            Thread.sleep(1000);
+            return 2;
+        });
+        new Thread(ft).start();
+
+        while (!(f1.isDone() && ft.isDone())) ;
+        System.out.println("finished");
+    }
 }
