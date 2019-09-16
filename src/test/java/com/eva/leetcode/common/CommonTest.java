@@ -227,4 +227,26 @@ public class CommonTest {
         str1 = str1.intern();
         System.out.println(str1 == str2);
     }
+
+    @Test
+    public void testCondition() throws Exception {
+        ReentrantLock lock = new ReentrantLock();
+        Condition cond1 = lock.newCondition();
+        Semaphore s = new Semaphore(0);
+        new Thread(() -> {
+            try {
+                lock.lock();
+                cond1.await();
+                System.out.println("hello world..");
+            } catch (Exception ignored) {
+            } finally {
+                lock.unlock();
+                s.release();
+            }
+        }).start();
+        lock.lock();
+        cond1.signal();
+        lock.unlock();
+        s.acquire();
+    }
 }
