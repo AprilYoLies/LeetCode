@@ -8,6 +8,7 @@ package com.eva.learn.sort;
 public class MergeSort {
     /**
      * 递归调用归并排序函数
+     *
      * @param a 原数组
      * @param l 左边界
      * @param r 右边界
@@ -41,9 +42,53 @@ public class MergeSort {
         return res;
     }
 
+    private static int[] mergeSort(int[] arr) {
+        int[] temp = new int[arr.length];
+        int step = 2, t = 1;
+        while (true) {
+            int[] from, to;
+            if (t % 2 == 1) {
+                from = arr;
+                to = temp;
+            } else {
+                from = temp;
+                to = arr;
+            }
+            int c = 0;
+            while (true) {
+                int l = step * c;
+                int r = step / 2 + step * c;
+                int tl = step * c;
+                for (int i = 0; i < step; i++) {
+                    int min;
+                    if (tl >= arr.length) break;
+                    if (l < step / 2 + step * c) {
+                        if (r < step + step * c && r < arr.length) {
+                            if (from[l] < from[r]) min = from[l++];
+                            else min = from[r++];
+                        } else {
+                            min = from[l++];
+                        }
+                    } else {
+                        min = from[r++];
+                    }
+                    to[tl++] = min;
+                }
+                if (l >= arr.length || r >= arr.length) break;
+                c++;
+            }
+            if (step >= arr.length) {
+                return to;
+            }
+            step *= 2;
+            t++;
+        }
+    }
+
     public static void main(String[] args) {
         int i;
-        int[] a = {30, 40, 60, 10, 20, 50, 70, 25, 33, 12, 90, 100, 87, 59, 39, 101};
+        int[] a = {30, 40, 60, 10, 20, 50, 70, 25, 33, 12, 90, 100, 87, 59, 39, 101, 103, 77, 49};
+        int[] b = {30, 40, 60, 10, 20, 50, 70, 25, 33, 12, 90, 100, 87, 59, 39, 101, 103, 77, 49};
 
         System.out.print("before sort:");
         for (i = 0; i < a.length; i++)
@@ -56,6 +101,13 @@ public class MergeSort {
         System.out.print("after  sort:");
         for (i = 0; i < a.length; i++)
             System.out.printf("%d ", a[i]);
+        System.out.print("\n");
+
+        b = mergeSort(b);                    // 归并排序(从下往上)
+
+        System.out.print("after  sort:");
+        for (i = 0; i < b.length; i++)
+            System.out.printf("%d ", b[i]);
         System.out.print("\n");
     }
 }
