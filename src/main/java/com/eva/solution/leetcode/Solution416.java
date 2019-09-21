@@ -1,12 +1,14 @@
 package com.eva.solution.leetcode;
 
+import java.util.Arrays;
+
 /**
  * @Author EvaJohnson
  * @Date 2019-08-16
  * @Email g863821569@gmail.com
  */
 public class Solution416 {
-    private static boolean canPartition(int[] nums) {
+    private static boolean canPartitionDP(int[] nums) {
         if (nums.length == 0)
             return true;
         int sum = 0;
@@ -56,9 +58,37 @@ public class Solution416 {
         return dp[half];
     }
 
+    public static boolean canPartition(int[] nums) {
+        if (nums.length == 0)
+            return true;
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        if (sum % 2 == 1)
+            return false;
+        int target = sum / 2;
+        Arrays.sort(nums);
+        if (nums[nums.length - 1] > target) return false;
+        return dfs(nums.length - 1, 0, target, nums);
+    }
+
+    private static boolean dfs(int cur, int sum, int target, int[] nums) {
+        for (int i = cur; i >= 0; i--) {
+            sum += nums[i];
+            if (sum == target) return true;
+            else if (sum > target) {
+            } else {
+                if (dfs(i - 1, sum, target, nums)) return true;
+            }
+            sum -= nums[i];
+        }
+        return false;
+    }
+
 
     public static void main(String[] args) {
-        System.out.println(canPartition(new int[]{100, 100, 100, 100, 100, 100, 100}));
+        System.out.println(canPartition(new int[]{1, 2, 3, 4, 5, 6, 7}));
         System.out.println(canPartitionMinSpace(new int[]{100, 100, 100, 100, 100, 100, 100}));
     }
 }
