@@ -282,4 +282,19 @@ public class CommonTest {
         set.add(null);
         set.add(null);
     }
+
+    @Test
+    public void testIntegerConvert() {
+        System.out.println(Long.MAX_VALUE);
+        System.out.println(convert(99999999, 99999998));
+    }
+
+    private int convert(int num, int radix) {
+        StringBuilder sb = new StringBuilder();
+        while (num > 0) {
+            sb.append(num % radix);
+            num /= radix;
+        }
+        return Integer.parseInt(sb.reverse().toString());
+    }
 }
