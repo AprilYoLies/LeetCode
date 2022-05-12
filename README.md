@@ -1,4 +1,4 @@
-# LeetCode
+# LeetCode 刷题
 
 算法菜鸟成长之路!!
 
