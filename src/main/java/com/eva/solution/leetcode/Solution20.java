@@ -1,5 +1,7 @@
 package com.eva.solution.leetcode;
 
+import org.junit.Test;
+
 import java.util.Stack;
 
 /**
@@ -8,7 +10,7 @@ import java.util.Stack;
  * @Email g863821569@gmail.com
  */
 public class Solution20 {
-    public boolean isValid(String s) {
+    public boolean isValid1(String s) {
         char[] chars = s.toCharArray();
         Stack<Character> stack = new Stack<>();
         for (int i = 0; i < chars.length; i++) {
@@ -22,6 +24,26 @@ public class Solution20 {
                 }
             } else
                 stack.push(chars[i]);
+        }
+        return stack.empty();
+    }
+
+    @Test
+    public void testIsValid() {
+        System.out.println(isValid("()"));
+    }
+
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        char[] chars = s.toCharArray();
+        for (char aChar : chars) {
+            if (!isRight(aChar)) {
+                stack.push(aChar);
+            } else {
+                if (stack.empty() || !isMatch(stack.pop(), aChar)) {
+                    return false;
+                }
+            }
         }
         return stack.empty();
     }
