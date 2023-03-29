@@ -12,7 +12,7 @@ import java.util.*;
 public class Solution102 {
 
     @Test
-    public void testTopKFrequent() {
+    public void testSolution() {
         TreeNode root = new TreeNode(1);
         TreeNode l = new TreeNode(2);
         TreeNode r = new TreeNode(3);

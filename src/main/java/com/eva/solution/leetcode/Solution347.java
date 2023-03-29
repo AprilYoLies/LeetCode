@@ -12,7 +12,7 @@ import java.util.*;
 public class Solution347 {
 
     @Test
-    public void testTopKFrequent() {
+    public void testSolution() {
         int[] nums = new int[]{4, 1, -1, 2, -1, 2, 3};
         int k = 2;
         System.out.println(Arrays.toString(topKFrequent(nums, k)));
