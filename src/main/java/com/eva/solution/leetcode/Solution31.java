@@ -1,5 +1,7 @@
 package com.eva.solution.leetcode;
 
+import org.junit.Test;
+
 import java.util.Arrays;
 
 /**
@@ -8,7 +10,39 @@ import java.util.Arrays;
  * @Email g863821569@gmail.com
  */
 public class Solution31 {
+
+    @Test
+    public void testSolution() {
+        int[] nums = new int[]{5, 1, 1};
+        nextPermutation(nums);
+        System.out.println(Arrays.toString(nums));
+    }
+
     public void nextPermutation(int[] nums) {
+        int pos = nums.length - 1;
+        int cur = nums[pos--];
+        while (pos >= 0) {
+            if (nums[pos] < cur) {
+                break;
+            } else {
+                cur = nums[pos];
+            }
+            pos--;
+        }
+        if (pos >= 0) {
+            for (int i = nums.length - 1; i >= 0; i--) {
+                if (nums[i] > nums[pos]) {
+                    int tmp = nums[i];
+                    nums[i] = nums[pos];
+                    nums[pos] = tmp;
+                    break;
+                }
+            }
+        }
+        Arrays.sort(nums, pos + 1, nums.length);
+    }
+
+    public void nextPermutation1(int[] nums) {
         int len = nums.length;
         int index = len - 2;
         int max = nums[len - 1];
