@@ -1,10 +1,12 @@
 package com.eva.solution.leetcode;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Solution257 {
-    public static List<String> binaryTreePaths(TreeNode root) {
+    public static List<String> binaryTreePaths1(TreeNode root) {
         List<String> results = new ArrayList<>();
         if (root == null) return results;
         findResults(results, root, new StringBuilder());
@@ -42,7 +44,62 @@ public class Solution257 {
         root.right = right;
         right.left = left1;
         right.right = right1;
-        binaryTreePaths(root);
+        binaryTreePaths1(root);
+    }
+
+    /**
+     *               1
+     *         2           3
+     *     4      5     6    7
+     *          8   9
+     */
+    @Test
+    public void testSolution() {
+        TreeNode root = new TreeNode(1);
+        TreeNode l = new TreeNode(2);
+        TreeNode r = new TreeNode(3);
+        TreeNode ll = new TreeNode(4);
+        TreeNode lr = new TreeNode(5);
+        TreeNode rl = new TreeNode(6);
+        TreeNode rr = new TreeNode(7);
+        TreeNode lrl = new TreeNode(8);
+        TreeNode lrr = new TreeNode(9);
+        root.left = l;
+        root.right = r;
+        l.left = ll;
+        l.right = lr;
+        r.left = rl;
+        r.right = rr;
+        lr.left = lrl;
+        lr.right = lrr;
+        System.out.println(binaryTreePaths(root));
+    }
+
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> ans = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        if (root == null) return ans;
+        binaryTreePaths(root, ans, sb);
+        return ans;
+    }
+
+    public void binaryTreePaths(TreeNode root, List<String> ans, StringBuilder sb) {
+        if (sb.length() > 0) {
+            sb.append("->");
+        }
+        sb.append(root.val);
+        if (root.left == null && root.right == null) {
+            ans.add(sb.toString());
+            return;
+        }
+        if (root.left != null) {
+            binaryTreePaths(root.left, ans, sb);
+            sb.delete(sb.lastIndexOf("->"), sb.length());
+        }
+        if (root.right != null) {
+            binaryTreePaths(root.right, ans, sb);
+            sb.delete(sb.lastIndexOf("->"), sb.length());
+        }
     }
 
     public static class TreeNode {
