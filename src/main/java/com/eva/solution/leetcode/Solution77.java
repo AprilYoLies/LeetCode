@@ -1,10 +1,37 @@
 package com.eva.solution.leetcode;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Solution77 {
-    public static List<List<Integer>> combine(int n, int k) {
+
+    @Test
+    public void testSolution() {
+        System.out.println(combine(5, 3));
+    }
+
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> item = new ArrayList<>();
+        combine(n, k, 1, ans, item);
+        return ans;
+    }
+
+    public void combine(int n, int k, int pos, List<List<Integer>> ans, List<Integer> item) {
+        for (int i = pos; i <= n; i++) {
+            item.add(i);
+            if (item.size() == k) {
+                ans.add(new ArrayList<>(item));
+            } else {
+                combine(n, k, i + 1, ans, item);
+            }
+            item.remove(item.size() - 1);
+        }
+    }
+
+    public static List<List<Integer>> combine2(int n, int k) {
         List<List<Integer>> results = new ArrayList<>();
         List<Integer> tmp = new ArrayList<>();
         findResults(results, 1, tmp, n, k);
@@ -43,7 +70,7 @@ public class Solution77 {
     }
 
     public static void main(String[] args) {
-        System.out.println(combine(4, 3));
+        System.out.println(combine2(4, 3));
         System.out.println();
         System.out.println(combine1(4, 3));
     }
