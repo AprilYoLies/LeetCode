@@ -1,8 +1,66 @@
 package com.eva.solution.leetcode;
 
+import org.junit.Test;
+
 import java.util.*;
 
 public class Solution127 {
+
+    @Test
+    public void testSolution() {
+        String beginWord = "hit";
+        String endWord = "cog";
+        List<String> wordList = new ArrayList<>(Arrays.asList("hot", "dot", "dog", "lot", "log"));
+        System.out.println(ladderLength(beginWord, endWord, wordList));
+    }
+
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        if (beginWord.length() != endWord.length() || !wordList.contains(endWord)) return 0;
+        wordList.add(beginWord);
+        wordList.add(endWord);
+        Map<String, List<String>> wordsMap = genWordsMap(wordList);
+        Set<String> visited = new HashSet<>();
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(beginWord);
+        visited.add(beginWord);
+        int dist = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            dist++;
+            for (int i = 0; i < size; i++) {
+                String word = queue.poll();
+                if (endWord.equals(word)) return dist;
+                List<String> nextWords = wordsMap.get(word);
+                for (String nextWord : nextWords) {
+                    if (visited.contains(nextWord)) continue;
+                    visited.add(nextWord);
+                    queue.offer(nextWord);
+                }
+            }
+        }
+        return 0;
+    }
+
+    private Map<String, List<String>> genWordsMap(List<String> wordList) {
+        Map<String, List<String>> map = new HashMap<>(wordList.size());
+        for (String word : wordList) {
+            List<String> words = new ArrayList<>();
+            for (String str : wordList) {
+                if (word.length() != str.length()) continue;
+                int c = 0;
+                for (int i = 0; i < str.length(); i++) {
+                    if (word.charAt(i) != str.charAt(i)) {
+                        if (c++ == 1) break;
+                    }
+                }
+                if (c == 1)
+                    words.add(str);
+            }
+            map.put(word, words);
+        }
+        return map;
+    }
+
     public static int ladderLength1(String beginWord, String endWord, List<String> wordList) {
         wordList.add(beginWord);
         int N = wordList.size();
@@ -68,7 +126,7 @@ public class Solution127 {
         return 0;
     }
 
-    public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
+    public static int ladderLength2(String beginWord, String endWord, List<String> wordList) {
         if (!wordList.contains(endWord) || beginWord.length() != endWord.length()) return 0;
         wordList.add(0, beginWord);
         wordList.add(endWord);
@@ -124,6 +182,6 @@ public class Solution127 {
         words.add("log");
         words.add("cog");
         System.out.println(ladderLength1("hit", "cog", words));
-        System.out.println(ladderLength("hit", "cog", words));
+        System.out.println(ladderLength2("hit", "cog", words));
     }
 }
