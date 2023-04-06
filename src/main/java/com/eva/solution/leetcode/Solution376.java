@@ -1,5 +1,7 @@
 package com.eva.solution.leetcode;
 
+import org.junit.Test;
+
 import java.util.Arrays;
 
 /**
@@ -20,7 +22,29 @@ import java.util.Arrays;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class Solution376 {
-    public static int wiggleMaxLength(int[] nums) {
+
+    @Test
+    public void testSolution() {
+        int[] nums = new int[]{1, 7, 4, 9, 2, 5};
+        System.out.println(wiggleMaxLength(nums));
+    }
+
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length <= 1) return nums.length;
+        int count = 1;
+        int pre = 0;
+        int cur;
+        for (int i = 1; i < nums.length; i++) {
+            cur = nums[i] - nums[i - 1];
+            if ((pre <= 0 && cur > 0) || (pre >= 0 && cur < 0)) {
+                pre = cur;
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static int wiggleMaxLength2(int[] nums) {
         if (nums.length <= 1)
             return nums.length;
         if (nums.length == 2 && nums[0] == nums[1])
@@ -58,7 +82,7 @@ public class Solution376 {
         return len[nums.length - 1];
     }
 
-    public static int wiggleMaxLengthFast(int[] nums) {
+    public static int wiggleMaxLengthFast1(int[] nums) {
         if (nums.length <= 1)
             return nums.length;
         int a = 1, b = 1;
@@ -69,10 +93,10 @@ public class Solution376 {
                 b = a + 1;
             }
         }
-        return Math.max(a,b);
+        return Math.max(a, b);
     }
 
     public static void main(String[] args) {
-        System.out.println(wiggleMaxLengthFast(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9}));
+        System.out.println(wiggleMaxLengthFast1(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9}));
     }
 }
