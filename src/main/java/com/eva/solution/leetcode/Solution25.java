@@ -18,6 +18,32 @@ public class Solution25 {
     }
 
     public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null || k <= 1) return head;
+        ListNode newHead = null;
+        ListNode newTail = null;
+        ListNode to = null;
+        for (int i = 0; i < k; i++) {
+            if (i == 0) to = head;
+            else to = to.next;
+            if (to == null) return head;
+            if (i == k - 1) {
+                ListNode cur = head;
+                head = to.next;
+                while (true) {
+                    ListNode next = cur.next;
+                    cur.next = newHead;
+                    newHead = cur;
+                    if (newTail == null) newTail = newHead;
+                    if (cur == to) break;
+                    cur = next;
+                }
+            }
+        }
+        newTail.next = reverseKGroup(head, k);
+        return newHead;
+    }
+
+    public ListNode reverseKGroup2(ListNode head, int k) {
         if (k == 1 || head == null) return head;
         ListNode tail = null;
         ListNode from = head;
