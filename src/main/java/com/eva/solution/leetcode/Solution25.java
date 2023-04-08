@@ -12,9 +12,12 @@ public class Solution25 {
     @Test
     public void testSolution() {
         // 1 2 3 4 5
-        ListNode head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5, new ListNode(6, new ListNode(7, new ListNode(8, null))))))));
-        ListNode head1 = reverseKGroup(head, 3);
+        ListNode head1 = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5, new ListNode(6, new ListNode(7, new ListNode(8, null))))))));
+        ListNode head2 = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5, new ListNode(6, new ListNode(7, new ListNode(8, null))))))));
+        head1 = reverseKGroup(head1, 3);
+        head2 = reverseKGroup3(head2, 3);
         System.out.println(head1);
+        System.out.println(head2);
     }
 
     public ListNode reverseKGroup(ListNode head, int k) {
@@ -40,6 +43,33 @@ public class Solution25 {
             }
         }
         newTail.next = reverseKGroup(head, k);
+        return newHead;
+    }
+
+    // 最后一组不够 k 个也翻转
+    public ListNode reverseKGroup3(ListNode head, int k) {
+        if (head == null || k <= 1) return head;
+        ListNode newHead = null;
+        ListNode newTail = null;
+        ListNode to = null;
+        for (int i = 0; i < k; i++) {
+            if (i == 0) to = head;
+            else to = to.next;
+            if (i == k - 1 || to.next == null) {
+                ListNode cur = head;
+                head = to.next;
+                while (cur != null) {
+                    ListNode next = cur.next;
+                    cur.next = newHead;
+                    newHead = cur;
+                    if (newTail == null) newTail = newHead;
+                    if (cur == to) break;
+                    cur = next;
+                }
+                if (to.next == null) return newHead;
+            }
+        }
+        newTail.next = reverseKGroup3(head, k);
         return newHead;
     }
 
