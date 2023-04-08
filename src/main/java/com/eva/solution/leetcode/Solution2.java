@@ -6,15 +6,6 @@ package com.eva.solution.leetcode;
  * @Email g863821569@gmail.com
  */
 
-class ListNode {
-    int val;
-    ListNode next;
-
-    ListNode(int x) {
-        val = x;
-    }
-}
-
 class Solution2 {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         String ans = listAdd(l1, l2);
